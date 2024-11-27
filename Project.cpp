@@ -41,6 +41,7 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     exitFlag = false;
+    
 }
 
 void GetInput(void)
@@ -55,6 +56,8 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
+    objPos a = objPos(4,5,'2');
+
     int i,j, k = 0;
     MacUILib_clearScreen();
     for(i=0;i<10;i++)
@@ -68,6 +71,10 @@ void DrawScreen(void)
             else if(j==0 ||j == 19)
             {
                 MacUILib_printf("#");
+            }
+            else if(i== a.pos->x &&j == a.pos->y)
+            {
+                MacUILib_printf("%c",a.symbol);
             }
             else
             {
