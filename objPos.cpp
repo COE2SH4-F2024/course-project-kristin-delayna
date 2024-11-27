@@ -19,8 +19,32 @@ objPos::objPos(int xPos, int yPos, char sym)
 // Respect the rule of six / minimum four
 // [TODO] Implement the missing special member functions to meet the minimum four rule
 
+//destructor
+objPos::~objPos()
+{
+    delete[] pos;
+}
 
+//copy constructor
+objPos::objPos(const objPos &d)
+{
+    pos = new Pos;
+    pos->x = d.pos->x;
+    pos->y= d.pos->y;
+    symbol = d.symbol;
+}
 
+//copy assignment operator
+
+objPos& objPos::operator=(const objPos &d)
+{
+    if(this != &d)
+    {
+        pos->x = d.pos->x;
+        pos->y= d.pos->y;
+        symbol = d.symbol;
+    }
+}
 
 void objPos::setObjPos(objPos o)
 {
