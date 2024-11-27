@@ -55,7 +55,29 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    MacUILib_clearScreen();    
+    int i,j, k = 0;
+    MacUILib_clearScreen();
+    for(i=0;i<10;i++)
+    {
+        for(j=0;j<20;j++)
+        {
+            if(i==0 || i == 9)
+            {
+                MacUILib_printf("#");
+            }
+            else if(j==0 ||j == 19)
+            {
+                MacUILib_printf("#");
+            }
+            else
+            {
+                MacUILib_printf(" ");
+            }
+    
+        }
+        MacUILib_printf("\n");
+    }
+
 }
 
 void LoopDelay(void)
