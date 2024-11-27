@@ -15,7 +15,7 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-
+objPos objects[2];
 
 int main(void)
 {
@@ -41,6 +41,8 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     exitFlag = false;
+    objects[0] = objPos(2,4,'a');
+    objects[1] = objPos(3,6,'g');
     
 }
 
@@ -56,7 +58,6 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    objPos a = objPos(4,5,'2');
 
     int i,j, k = 0;
     MacUILib_clearScreen();
@@ -72,9 +73,10 @@ void DrawScreen(void)
             {
                 MacUILib_printf("#");
             }
-            else if(i== a.pos->x &&j == a.pos->y)
+            else if(k<2 && i== objects[k].pos->x &&j == objects[k].pos->y)
             {
-                MacUILib_printf("%c",a.symbol);
+                MacUILib_printf("%c",objects[k].symbol);
+                k++;
             }
             else
             {
