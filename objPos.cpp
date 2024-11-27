@@ -40,10 +40,12 @@ objPos& objPos::operator=(const objPos &d)
 {
     if(this != &d)
     {
+        pos = new Pos;
         pos->x = d.pos->x;
         pos->y= d.pos->y;
         symbol = d.symbol;
     }
+    return *this;
 }
 
 void objPos::setObjPos(objPos o)
