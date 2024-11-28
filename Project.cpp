@@ -42,7 +42,7 @@ void Initialize(void)
 {
     MacUILib_init();
     MacUILib_clearScreen();
-    game = new GameMechs(10,20);
+    game = new GameMechs(20,10);
     myPlayer = new Player(game);
     objects[0] = objPos(2,4,'a');
     objects[1] = objPos(3,6,'g');
@@ -76,23 +76,23 @@ void DrawScreen(void)
 
     MacUILib_clearScreen();
 
-    for(i=0;i<xSize;i++)
+    for(i=0;i<ySize;i++)
     {
-        for(j=0;j<ySize;j++)
+        for(j=0;j<xSize;j++)
         {
-            if(i==0 || i == xSize-1)
+            if(i==0 || i == ySize-1)
             {
                 MacUILib_printf("#");
             }
-            else if(j==0 ||j == ySize-1)
+            else if(j==0 ||j == xSize-1)
             {
                 MacUILib_printf("#");
             }
-            else if(i== playerPos.pos->x &&j == playerPos.pos->y)
+            else if(i== playerPos.pos->y &&j == playerPos.pos->x)
             {
                 MacUILib_printf("%c",playerPos.symbol);
             }
-            else if(k<2 && i== objects[k].pos->x &&j == objects[k].pos->y)
+            else if(k<2 && i== objects[k].pos->y &&j == objects[k].pos->x)
             {
                 MacUILib_printf("%c",objects[k].symbol);
                 k++;

@@ -73,16 +73,16 @@ void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
     if(myFSMMode==LEFT){
-        playerPos.pos->y--;
-    }
-    else if(myFSMMode==RIGHT){
-        playerPos.pos->y++;
-    }
-    else if(myFSMMode==UP){
         playerPos.pos->x--;
     }
-    else if(myFSMMode==DOWN){
+    else if(myFSMMode==RIGHT){
         playerPos.pos->x++;
+    }
+    else if(myFSMMode==UP){
+        playerPos.pos->y--;
+    }
+    else if(myFSMMode==DOWN){
+        playerPos.pos->y++;
     }
     else if(myFSMMode==STOP){
         playerPos.pos->x =(mainGameMechsRef->getBoardSizeX()/2);
