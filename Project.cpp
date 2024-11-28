@@ -106,7 +106,8 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
     MacUILib_printf("Input: %c\n",game->getInput());
-
+    MacUILib_printf("Player Position: %d %d\n",playerPos.pos->x,playerPos.pos->y);
+    MacUILib_printf("myFSMMode (UP, DOWN, LEFT, RIGHT, STOP): %d",myPlayer->getmyFSMmode());
 }
 
 void LoopDelay(void)
