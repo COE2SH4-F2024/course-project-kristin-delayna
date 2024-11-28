@@ -3,6 +3,8 @@
 #include "objPos.h"
 #include "GameMechs.h"
 #include "Player.h"
+#include <time.h>
+
 
 using namespace std;
 
@@ -16,7 +18,7 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-objPos objects[2];
+
 GameMechs* game;
 Player* myPlayer;
 
@@ -40,24 +42,28 @@ int main(void)
 
 void Initialize(void)
 {
+    srand(time(NULL));
     MacUILib_init();
     MacUILib_clearScreen();
     game = new GameMechs(20,10);
     myPlayer = new Player(game);
-    objects[0] = objPos(2,4,'a');
-    objects[1] = objPos(3,6,'g');
+    game->generateFood(myPlayer->getPlayerPos());
     
 
 }
 
 void GetInput(void)
 {
+    
     if(MacUILib_hasChar())
     {
         char input = MacUILib_getChar();
         game->setInput(input);
-    }
-   
+        if(game->getInput()== 32)
+        {
+            game->generateFood(myPlayer->getPlayerPos());
+        }
+    } 
 }
 
 void RunLogic(void)
@@ -71,7 +77,8 @@ void DrawScreen(void)
 {
     objPos playerPos = myPlayer->getPlayerPos();
     int xSize = game->getBoardSizeX();
-    int ySize = game->getBoardSizeY();
+    int ySize = game->getBoardSizeY(); 
+    objPos foodPos = game->getFoodPos();
     int i,j, k = 0;
 
     MacUILib_clearScreen();
@@ -92,10 +99,9 @@ void DrawScreen(void)
             {
                 MacUILib_printf("%c",playerPos.symbol);
             }
-            else if(k<2 && i== objects[k].pos->y &&j == objects[k].pos->x)
+            else if(j == foodPos.pos->x && i == foodPos.pos->y)
             {
-                MacUILib_printf("%c",objects[k].symbol);
-                k++;
+                MacUILib_printf("%c",foodPos.symbol);
             }
             else
             {
