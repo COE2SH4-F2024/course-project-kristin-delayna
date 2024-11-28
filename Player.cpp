@@ -7,9 +7,7 @@ Player::Player(GameMechs* thisGMRef)
     myFSMMode = STOP;
 
     // more actions to be included
-    playerPos.pos->x = (mainGameMechsRef->getBoardSizeX())/2;
-    playerPos.pos->y = (mainGameMechsRef->getBoardSizeY())/2;
-    playerPos.symbol = '*';
+    playerPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'@');
 
 }
 
@@ -17,7 +15,7 @@ Player::Player(GameMechs* thisGMRef)
 Player::~Player()
 {
     // delete any heap members here
-    delete mainGameMechsRef;
+    
 }
 
 objPos Player::getPlayerPos() const
@@ -84,18 +82,19 @@ void Player::movePlayer()
         playerPos.pos->y =(mainGameMechsRef->getBoardSizeY()/2);
     }
 
-    if (playerPos.pos->x<0){
-        playerPos.pos->x=(mainGameMechsRef->getBoardSizeX()-1);
+
+    if (playerPos.pos->x < 0) {
+        playerPos.pos->x = (mainGameMechsRef->getBoardSizeX() - 2);
     }
-    else if (playerPos.pos->x>(mainGameMechsRef->getBoardSizeX()-1)){
-        playerPos.pos->x=1;
+    else if (playerPos.pos->x >= mainGameMechsRef->getBoardSizeX()) {
+        playerPos.pos->x = 1;
     }
 
-    if (playerPos.pos->y<0){
-        playerPos.pos->y=(mainGameMechsRef->getBoardSizeY()-1);
+    if (playerPos.pos->y < 0) {
+        playerPos.pos->y = (mainGameMechsRef->getBoardSizeY() - 1);
     }
-    else if (playerPos.pos->y>(mainGameMechsRef->getBoardSizeX()-1)){
-        playerPos.pos->y=1;
+    else if (playerPos.pos->y >= mainGameMechsRef->getBoardSizeY()) {
+        playerPos.pos->y = 1;
     }
 
 }

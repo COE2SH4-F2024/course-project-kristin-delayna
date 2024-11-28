@@ -36,13 +36,14 @@ objPos::objPos(const objPos &d)
 
 //copy assignment operator
 
-objPos& objPos::operator=(const objPos &d)
+objPos& objPos::operator=(const objPos& d)
 {
-    if(this != &d)
+    if (this != &d)
     {
+        delete pos; // Prevent memory leaks
         pos = new Pos;
         pos->x = d.pos->x;
-        pos->y= d.pos->y;
+        pos->y = d.pos->y;
         symbol = d.symbol;
     }
     return *this;
