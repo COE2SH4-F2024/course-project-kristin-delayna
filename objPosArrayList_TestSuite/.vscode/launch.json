@@ -8,12 +8,12 @@
           "name": "C/C++ Debugger Launch",
           "type": "cppdbg",
           "request": "launch",
-          "program": "${workspaceFolder}/ALTester",
+          "program": "${workspaceFolder}/ALTester.exe",
           "args": [],
           "cwd": "${workspaceRoot}",
           "stopAtEntry": false,          
           "environment": [],
-          "externalConsole": false,            
+          "externalConsole": true,            
           "linux": {            
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb"
