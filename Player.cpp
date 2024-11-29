@@ -57,9 +57,6 @@ void Player::updatePlayerDir()
                     myFSMMode = RIGHT;
                 }
                 break;
-            default:
-                myFSMMode = STOP;
-                break;
         }
     }
 }

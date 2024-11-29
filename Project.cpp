@@ -4,6 +4,7 @@
 #include "GameMechs.h"
 #include "Player.h"
 #include <time.h>
+#include "Food.h"
 
 
 using namespace std;
@@ -21,6 +22,7 @@ void CleanUp(void);
 
 GameMechs* game;
 Player* myPlayer;
+Food* gameFood;
 
 int main(void)
 {
@@ -47,8 +49,8 @@ void Initialize(void)
     MacUILib_clearScreen();
     game = new GameMechs(20,10);
     myPlayer = new Player(game);
-    game->generateFood(myPlayer->getPlayerPos());
-    
+    //game->generateFood(myPlayer->getPlayerPos());
+    gameFood = new Food(20,10);
 
 }
 
@@ -61,7 +63,7 @@ void GetInput(void)
         game->setInput(input);
         if(game->getInput()== 32)
         {
-            game->generateFood(myPlayer->getPlayerPos());
+            gameFood->generateFood(myPlayer->getPlayerPos());
         }
     } 
 }
@@ -78,7 +80,7 @@ void DrawScreen(void)
     objPos playerPos = myPlayer->getPlayerPos();
     int xSize = game->getBoardSizeX();
     int ySize = game->getBoardSizeY(); 
-    objPos foodPos = game->getFoodPos();
+    objPos foodPos = gameFood->getFoodPos();
     int i,j, k = 0;
 
     MacUILib_clearScreen();
@@ -130,4 +132,5 @@ void CleanUp(void)
     //deletions for any new
     delete myPlayer;
     delete game;
+    delete gameFood;
 }
