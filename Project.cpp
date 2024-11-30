@@ -77,11 +77,11 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    objPos playerPos = myPlayer->getPlayerPos();
+    objPosArrayList* playerPos = myPlayer->getPlayerPos();
     int xSize = game->getBoardSizeX();
     int ySize = game->getBoardSizeY(); 
     objPos foodPos = gameFood->getFoodPos();
-    int i,j, k = 0;
+    int i,j, k,l= 0;
 
     MacUILib_clearScreen();
 
@@ -97,9 +97,11 @@ void DrawScreen(void)
             {
                 MacUILib_printf("#");
             }
-            else if(i== playerPos.pos->y &&j == playerPos.pos->x)
+            else if(i== playerPos->getHeadElement().pos->y &&j == playerPos->getHeadElement().pos->x)
             {
-                MacUILib_printf("%c",playerPos.symbol);
+                for(l=0;l<playerPos->getSize();l++){
+                    MacUILib_printf("%c",playerPos->getElement(l).getSymbol());
+                }
             }
             else if(j == foodPos.pos->x && i == foodPos.pos->y)
             {
@@ -108,13 +110,15 @@ void DrawScreen(void)
             else
             {
                 MacUILib_printf(" ");
+
+                
             }
     
         }
         MacUILib_printf("\n");
     }
     MacUILib_printf("Input: %c\n",game->getInput());
-    MacUILib_printf("Player Position: %d %d\n",playerPos.pos->x,playerPos.pos->y);
+    MacUILib_printf("Player Position: %d %d\n",playerPos->getHeadElement().pos->x,playerPos->getHeadElement().pos->y);
     MacUILib_printf("myFSMMode (UP, DOWN, LEFT, RIGHT, STOP): %d",myPlayer->getmyFSMmode());
 }
 

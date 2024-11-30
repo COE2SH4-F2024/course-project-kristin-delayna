@@ -20,20 +20,23 @@ Food::~Food(){
     
 }
 
-void Food::generateFood(objPos blockOff)
+void Food::generateFood(objPosArrayList* blockOff)
 {
     int bitVector[yLim+1][xLim+1] = {0};
-    int unique = 0;
+    int unique = 0,z;
     while(unique<1)
     {
         int randomx = (rand() % (xLim-2))+1;
         int randomy = (rand() % (yLim-2))+1;
 
-        if(bitVector[randomy][randomx] == 0 && randomy != blockOff.pos->y && randomx != blockOff.pos->x)
-        {
-            bitVector[randomy][randomx]++;
-            unique++; 
+        for(z=0;z<blockOff->getSize();z++){
+            if(bitVector[randomy][randomx] == 0 && randomy != blockOff->getElement(z).getObjPos().pos->y && randomx != blockOff->getElement(z).getObjPos().pos->x)
+            {
+                bitVector[randomy][randomx]++;
+                unique++; 
+            }
         }
+        
     }
     int i, j;
     int k = 0;
@@ -43,7 +46,7 @@ void Food::generateFood(objPos blockOff)
         {
             if(bitVector[i][j] != 0)
             {
-                food.setObjPos(j, i, '*');
+                food.setObjPos(j, i, 'x');
                 k++;
             }
         }

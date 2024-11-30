@@ -7,9 +7,10 @@ Player::Player(GameMechs* thisGMRef)
     myFSMMode = STOP;
 
     // more actions to be included
-    playerPos.pos->x = mainGameMechsRef->getBoardSizeX()/2;
-    playerPos.pos->y = mainGameMechsRef->getBoardSizeY()/2;
-    playerPos.symbol = '@';
+    playerPosList = new objPosArrayList();
+    objPos startPos;
+    startPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*');
+    playerPosList->insertHead(startPos);
 
 }
 
@@ -17,13 +18,14 @@ Player::Player(GameMechs* thisGMRef)
 Player::~Player()
 {
     // delete any heap members here
+    delete playerPosList;
     
 }
 
-objPos Player::getPlayerPos() const
+objPosArrayList* Player::getPlayerPos() const
 {
     // return the reference to the playerPos arrray list
-    return playerPos;
+    return playerPosList;
 }
 
 void Player::updatePlayerDir()
@@ -62,43 +64,55 @@ void Player::updatePlayerDir()
 }
 
 
-
-
-
-
 void Player::movePlayer()
 {
+    objPos move;
+    int xboard = mainGameMechsRef->getBoardSizeX();
+    int yboard = mainGameMechsRef->getBoardSizeY();
+
+    move.setObjPos(playerPosList->getHeadElement());
+    
+    //check snake lengths
+    if(move.pos->x == 3 && move.pos->y==5){
+        playerPosList->insertTail(move);
+    }
+
     // PPA3 Finite State Machine logic
     if(myFSMMode==LEFT){
-        playerPos.pos->x--;
+        move.pos->x--;
+        if(move.pos->x<1){
+            move.pos->x = xboard-2;
+        }
     }
     else if(myFSMMode==RIGHT){
-        playerPos.pos->x++;
+        move.pos->x++;
+        if(move.pos->x > xboard-2){
+            move.pos->x = 1;
+        }
     }
     else if(myFSMMode==UP){
-        playerPos.pos->y--;
+        move.pos->y--;
+        if(move.pos->y < 1){
+            move.pos->y = yboard-2;
+        }
     }
     else if(myFSMMode==DOWN){
-        playerPos.pos->y++;
+        move.pos->y++;
+        if(move.pos->y > yboard-2){
+            move.pos->y = 1;
+        }
     }
     else if(myFSMMode==STOP){
-        playerPos.pos->x =(mainGameMechsRef->getBoardSizeX()/2);
-        playerPos.pos->y =(mainGameMechsRef->getBoardSizeY()/2);
+        //what do we do
+        // playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX()/2);
+        // playerPosList->getHeadElement().pos->y =(mainGameMechsRef->getBoardSizeY()/2);
     }
 
+    
+    if(myFSMMode!=STOP){
+        playerPosList->insertHead(move);
+        playerPosList->removeTail();
 
-    if (playerPos.pos->x < 1) {
-        playerPos.pos->x = (mainGameMechsRef->getBoardSizeX() - 2);
-    }
-    else if (playerPos.pos->x > mainGameMechsRef->getBoardSizeX()-2) {
-        playerPos.pos->x = 1;
-    }
-
-    if (playerPos.pos->y < 1) {
-        playerPos.pos->y = (mainGameMechsRef->getBoardSizeY() - 2);
-    }
-    else if (playerPos.pos->y > (mainGameMechsRef->getBoardSizeY()-2)) {
-        playerPos.pos->y = 1;
     }
 
 }
