@@ -72,7 +72,7 @@ void Player::movePlayer()
 
     move.setObjPos(playerPosList->getHeadElement());
     
-    //check snake lengths
+    //check snake lengths (remove after snake works)
     if(move.pos->x == 3 && move.pos->y==5){
         playerPosList->insertTail(move);
     }

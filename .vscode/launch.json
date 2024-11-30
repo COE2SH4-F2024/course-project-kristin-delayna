@@ -13,7 +13,7 @@
           "cwd": "${workspaceRoot}",
           "stopAtEntry": false,          
           "environment": [],
-          "externalConsole": false,            
+          "externalConsole": true,            
           "linux": {            
             "MIMode": "gdb",
             "miDebuggerPath": "/usr/bin/gdb"

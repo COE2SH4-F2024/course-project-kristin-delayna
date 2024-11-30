@@ -49,7 +49,6 @@ void Initialize(void)
     MacUILib_clearScreen();
     game = new GameMechs(20,10);
     myPlayer = new Player(game);
-    //game->generateFood(myPlayer->getPlayerPos());
     gameFood = new Food(20,10);
 
 }
@@ -97,10 +96,11 @@ void DrawScreen(void)
             {
                 MacUILib_printf("#");
             }
-            else if(i== playerPos->getHeadElement().pos->y &&j == playerPos->getHeadElement().pos->x)
+            else if(i== playerPos->getElement(l).pos->y &&j == playerPos->getElement(l).pos->x)
             {
-                for(l=0;l<playerPos->getSize();l++){
-                    MacUILib_printf("%c",playerPos->getElement(l).getSymbol());
+                MacUILib_printf("%c",playerPos->getElement(l).getSymbol());
+                if(l<playerPos->getSize()-1){
+                    l++;
                 }
             }
             else if(j == foodPos.pos->x && i == foodPos.pos->y)
@@ -117,9 +117,11 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
+    //debugging
     MacUILib_printf("Input: %c\n",game->getInput());
     MacUILib_printf("Player Position: %d %d\n",playerPos->getHeadElement().pos->x,playerPos->getHeadElement().pos->y);
-    MacUILib_printf("myFSMMode (UP, DOWN, LEFT, RIGHT, STOP): %d",myPlayer->getmyFSMmode());
+    MacUILib_printf("myFSMMode (UP, DOWN, LEFT, RIGHT, STOP): %d\n",myPlayer->getmyFSMmode());
+    MacUILib_printf("Snake Size (will inc. when hit (3,5)): %d\n",playerPos->getSize());
 }
 
 void LoopDelay(void)
