@@ -11,7 +11,7 @@ using namespace std;
 
 class Food{
     private:
-        objPos food;
+        objPos foodPos;
         int xLim;
         int yLim;
 

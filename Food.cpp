@@ -3,7 +3,7 @@
 
 Food::Food(){
     objPos foodPos;
-    food.setObjPos(-10,-10, 'x');
+    foodPos.setObjPos(-10,-10, 'x');
     xLim = 20;
     yLim = 10;
     
@@ -11,7 +11,7 @@ Food::Food(){
 
 Food::Food(int boardSizeX,int boardSizeY){
     objPos foodPos;
-    food.setObjPos(-10,-10, 'x');
+    foodPos.setObjPos(-10,-10, 'x');
     xLim = boardSizeX;
     yLim = boardSizeY;
 }
@@ -46,7 +46,7 @@ void Food::generateFood(objPosArrayList* blockOff)
         {
             if(bitVector[i][j] != 0)
             {
-                food.setObjPos(j, i, 'x');
+                foodPos.setObjPos(j, i, 'x');
                 k++;
             }
         }
@@ -57,5 +57,5 @@ void Food::generateFood(objPosArrayList* blockOff)
 
 objPos Food::getFoodPos() const
 {
-    return food;
+    return foodPos;
 }

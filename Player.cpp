@@ -101,16 +101,13 @@ void Player::movePlayer()
             move.pos->y = 1;
         }
     }
-    else if(myFSMMode==STOP){
-        // move.pos->y = CurrentPos.pos->y;
-        // move.pos->x = CurrentPos.pos->x;
-        return;
-    }
-    if (move.isPosEqual(food)) {
+    
+    if (move.isPosEqual(&food)) {
         playerPosList->insertHead(move);
         mainFoodRef->generateFood(playerPosList);
+        mainGameMechsRef->incrementScore();
     } 
-    if(myFSMMode!= STOP){
+    else if(myFSMMode!= STOP){
         playerPosList->insertHead(move); 
         playerPosList->removeTail(); 
     }

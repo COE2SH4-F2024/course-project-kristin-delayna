@@ -5,6 +5,7 @@
 #include "Player.h"
 #include <time.h>
 #include "Food.h"
+#include "objPosArrayList.h"
 
 
 using namespace std;
@@ -48,8 +49,8 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
     game = new GameMechs(20,10);
-    myPlayer = new Player(game, gameFood);
     gameFood = new Food(20,10);
+    myPlayer = new Player(game, gameFood);
     gameFood->generateFood(myPlayer->getPlayerPos());
 
 }
@@ -57,21 +58,19 @@ void Initialize(void)
 void GetInput(void)
 {
     
-    if(MacUILib_hasChar())
-    {
-        char input = MacUILib_getChar();
-        game->setInput(input);
-        if(game->getInput()== 32)
-        {
-            gameFood->generateFood(myPlayer->getPlayerPos());
-        }
-    } 
+    game->getInput();
+    
 }
 
 void RunLogic(void)
 {
+    if(game->getInput()== 32)
+    {
+        gameFood->generateFood(myPlayer->getPlayerPos());
+    }
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+    game->clearInput();
     
 }
 
@@ -142,4 +141,5 @@ void CleanUp(void)
     delete myPlayer;
     delete game;
     delete gameFood;
+
 }
