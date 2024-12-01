@@ -120,12 +120,7 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
     MacUILib_printf("Score: %d\n",game->getScore());
-    if(game->getLoseFlagStatus()==true){
-        MacUILib_printf("You Lost!\n");
-    }
-    if(game->getExitFlagStatus()==true){
-        MacUILib_printf("Exiting game...\n");
-    }
+    
 
     //debugging
     MacUILib_printf("================Debugging=================\n");
@@ -144,7 +139,12 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-
+    if(game->getLoseFlagStatus()==true){
+        MacUILib_printf("You Lost!\n");
+    }
+    if(game->getExitFlagStatus()==true){
+        MacUILib_printf("Exiting game...\n");
+    }
     MacUILib_uninit();
     //deletions for any new
     delete myPlayer;
