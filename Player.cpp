@@ -1,9 +1,10 @@
 #include "Player.h"
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* foodRef)
 {
     mainGameMechsRef = thisGMRef;
+    mainFoodRef = foodRef;
     myFSMMode = STOP;
 
     // more actions to be included
@@ -11,7 +12,6 @@ Player::Player(GameMechs* thisGMRef)
     objPos startPos;
     startPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2,mainGameMechsRef->getBoardSizeY()/2,'*');
     playerPosList->insertHead(startPos);
-
 }
 
 
@@ -59,6 +59,9 @@ void Player::updatePlayerDir()
                     myFSMMode = RIGHT;
                 }
                 break;
+            case 9: //Tab key to stop the snake
+                myFSMMode = STOP;
+                break;
         }
     }
 }
@@ -67,15 +70,11 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     objPos move;
+    objPos food = mainFoodRef->getFoodPos();
     int xboard = mainGameMechsRef->getBoardSizeX();
     int yboard = mainGameMechsRef->getBoardSizeY();
 
     move.setObjPos(playerPosList->getHeadElement());
-    
-    //check snake lengths (remove after snake works)
-    if(move.pos->x == 3 && move.pos->y==5){
-        playerPosList->insertTail(move);
-    }
 
     // PPA3 Finite State Machine logic
     if(myFSMMode==LEFT){
@@ -103,21 +102,21 @@ void Player::movePlayer()
         }
     }
     else if(myFSMMode==STOP){
-        //what do we do
-        // playerPosList->getHeadElement().pos->x =(mainGameMechsRef->getBoardSizeX()/2);
-        // playerPosList->getHeadElement().pos->y =(mainGameMechsRef->getBoardSizeY()/2);
+        // move.pos->y = CurrentPos.pos->y;
+        // move.pos->x = CurrentPos.pos->x;
+        return;
     }
-
-    
-    if(myFSMMode!=STOP){
+    if (move.isPosEqual(food)) {
         playerPosList->insertHead(move);
-        playerPosList->removeTail();
-
+        mainFoodRef->generateFood(playerPosList);
+    } 
+    if(myFSMMode!= STOP){
+        playerPosList->insertHead(move); 
+        playerPosList->removeTail(); 
     }
-
 }
-
 // More methods to be added
-int Player::getmyFSMmode(){
+int Player::getmyFSMmode()
+{
     return myFSMMode;
 }

@@ -7,6 +7,8 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 
+using namespace std;
+
 class Food{
     private:
         objPos food;
