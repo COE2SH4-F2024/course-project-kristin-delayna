@@ -27,8 +27,7 @@ class Player
         int getmyFSMmode();
 
         // More methods to be added here
-        bool checkFoodConsumption();
-        void increasePlayerLength();
+        bool checkSelfCollision();
 
     private:
         objPosArrayList* playerPosList; // Upgrade this in iteration 3.       

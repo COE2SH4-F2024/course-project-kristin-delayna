@@ -119,11 +119,20 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
+    MacUILib_printf("Score: %d\n",game->getScore());
+    if(game->getLoseFlagStatus()==true){
+        MacUILib_printf("You Lost!\n");
+    }
+    if(game->getExitFlagStatus()==true){
+        MacUILib_printf("Exiting game...\n");
+    }
+
     //debugging
+    MacUILib_printf("================Debugging=================\n");
     MacUILib_printf("Input: %c\n",game->getInput());
     MacUILib_printf("Player Position: %d %d\n",playerPos->getHeadElement().pos->x,playerPos->getHeadElement().pos->y);
     MacUILib_printf("myFSMMode (UP, DOWN, LEFT, RIGHT, STOP): %d\n",myPlayer->getmyFSMmode());
-    MacUILib_printf("Snake Size (will inc. when hit (3,5)): %d\n",playerPos->getSize());
+    MacUILib_printf("Snake Size: %d\n",playerPos->getSize());
 }
 
 void LoopDelay(void)

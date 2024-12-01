@@ -102,6 +102,11 @@ void Player::movePlayer()
         }
     }
     
+    if(checkSelfCollision()==true){
+        mainGameMechsRef->setLoseFlag();
+        mainGameMechsRef->setExitTrue();
+    }
+    
     if (move.isPosEqual(&food)) {
         playerPosList->insertHead(move);
         mainFoodRef->generateFood(playerPosList);
@@ -116,4 +121,18 @@ void Player::movePlayer()
 int Player::getmyFSMmode()
 {
     return myFSMMode;
+}
+
+bool Player::checkSelfCollision(){
+    if(myFSMMode!=STOP){
+        for(int i=1;i<playerPosList->getSize();i++){
+            if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y){
+                return true;
+            }
+        }
+    }
+    else{
+        return false;
+    }
+    
 }
