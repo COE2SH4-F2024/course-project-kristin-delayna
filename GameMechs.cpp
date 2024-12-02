@@ -58,6 +58,10 @@ void GameMechs::incrementScore()
 {
     score++;
 }
+void GameMechs::Kaboom()
+{
+    score = 0;
+}
 
 int GameMechs::getBoardSizeX() const
 {

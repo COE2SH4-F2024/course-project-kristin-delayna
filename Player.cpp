@@ -113,17 +113,35 @@ void Player::movePlayer()
     }
     bool foodEaten = false;
     for (int p = 0; p < foodBucket->getSize(); p++) {
-        objPos foodPos = foodBucket->getElement(p);
-        if (move.isPosEqual(&foodPos)) {
-            int inc = 0;
-            while(inc<foodBucket->getSize())
+        objPos foody = foodBucket->getElement(p);
+        if (move.isPosEqual(&foody)) {
+            while(foodBucket->getSize()>0)
             {
                 foodBucket->removeTail();
-                inc++;
-            }
-            playerPosList->insertHead(move); 
+            } 
             mainFoodRef->generateFood(playerPosList); 
-            mainGameMechsRef->incrementScore();
+            if(foody.getSymbol() == '$')
+            {
+                for(int i = 0; i<10; i++)
+                {
+                    mainGameMechsRef->incrementScore();
+                }
+                playerPosList->insertHead(move);
+            }
+            else if(foody.getSymbol() == 'X')
+            {
+                mainGameMechsRef->Kaboom();
+                int size = playerPosList->getSize();
+                for(int d = 0; d < size -1;d++)
+                    {
+                        playerPosList->removeTail();
+                    }
+            }       
+            else
+            {
+                mainGameMechsRef->incrementScore();
+                playerPosList->insertHead(move);
+            }
             foodEaten = true;
         }
     }
@@ -141,13 +159,11 @@ bool Player::checkSelfCollision(){
     if(myFSMMode!=STOP){
         for(int i=1;i<playerPosList->getSize();i++){
             if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y){
-                MacUILib_printf("there is collision");
                 return true;
             }
         }
     }
     else{
-        MacUILib_printf("there is no collision");
         return false;
     }
     

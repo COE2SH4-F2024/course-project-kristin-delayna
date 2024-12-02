@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define DELAY_CONST 500000
+#define DELAY_CONST 750000
 
 void Initialize(void);
 void GetInput(void);
@@ -63,10 +63,6 @@ void GetInput(void)
 
 void RunLogic(void)
 {
-    if(game->getInput()== 32)
-    {
-        gameFood->generateFood(myPlayer->getPlayerPos());
-    }
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     game->clearInput();
