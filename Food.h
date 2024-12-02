@@ -11,9 +11,9 @@ using namespace std;
 
 class Food{
     private:
-        objPos foodPos;
         int xLim;
         int yLim;
+        objPosArrayList* foodBucket;
 
     public:
         Food();
@@ -21,7 +21,8 @@ class Food{
         ~Food();
 
         void generateFood(objPosArrayList* blockOff);
-        objPos getFoodPos() const;
+        objPos getFoodPos(int index) const;
+        objPosArrayList* getFoodArrayList() const;
 
 
 

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "MacUILib.h"
 
 
 Player::Player(GameMechs* thisGMRef, Food* foodRef)
@@ -70,9 +71,10 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     objPos move;
-    objPos food = mainFoodRef->getFoodPos();
+    objPosArrayList* foodBucket = mainFoodRef->getFoodArrayList();
     int xboard = mainGameMechsRef->getBoardSizeX();
     int yboard = mainGameMechsRef->getBoardSizeY();
+    int index = 0;
 
     move.setObjPos(playerPosList->getHeadElement());
 
@@ -101,19 +103,32 @@ void Player::movePlayer()
             move.pos->y = 1;
         }
     }
-    
-    if(checkSelfCollision()==true){
+    else if(myFSMMode==STOP){
+        return;
+    }
+    if(checkSelfCollision() == true)
+    {
         mainGameMechsRef->setLoseFlag();
         mainGameMechsRef->setExitTrue();
     }
-    
-    if (move.isPosEqual(&food)) {
-        playerPosList->insertHead(move);
-        mainFoodRef->generateFood(playerPosList);
-        mainGameMechsRef->incrementScore();
-    } 
-    else if(myFSMMode!= STOP){
-        playerPosList->insertHead(move); 
+    bool foodEaten = false;
+    for (int p = 0; p < foodBucket->getSize(); p++) {
+        objPos foodPos = foodBucket->getElement(p);
+        if (move.isPosEqual(&foodPos)) {
+            int inc = 0;
+            while(inc<foodBucket->getSize())
+            {
+                foodBucket->removeTail();
+                inc++;
+            }
+            playerPosList->insertHead(move); 
+            mainFoodRef->generateFood(playerPosList); 
+            mainGameMechsRef->incrementScore();
+            foodEaten = true;
+        }
+    }
+    if (foodEaten == false && myFSMMode != STOP) {
+        playerPosList->insertHead(move);  
         playerPosList->removeTail(); 
     }
 }
@@ -122,16 +137,17 @@ int Player::getmyFSMmode()
 {
     return myFSMMode;
 }
-
 bool Player::checkSelfCollision(){
     if(myFSMMode!=STOP){
         for(int i=1;i<playerPosList->getSize();i++){
             if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y){
+                MacUILib_printf("there is collision");
                 return true;
             }
         }
     }
     else{
+        MacUILib_printf("there is no collision");
         return false;
     }
     

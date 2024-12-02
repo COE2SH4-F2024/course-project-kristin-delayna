@@ -2,21 +2,20 @@
 
 
 Food::Food(){
-    objPos foodPos;
-    foodPos.setObjPos(-10,-10, 'x');
+    foodBucket = new objPosArrayList();
     xLim = 20;
     yLim = 10;
     
 }
 
 Food::Food(int boardSizeX,int boardSizeY){
-    objPos foodPos;
-    foodPos.setObjPos(-10,-10, 'x');
+    foodBucket = new objPosArrayList();
     xLim = boardSizeX;
     yLim = boardSizeY;
 }
 
 Food::~Food(){
+    delete[] foodBucket;
     
 }
 
@@ -24,30 +23,44 @@ void Food::generateFood(objPosArrayList* blockOff)
 {
     int bitVector[yLim+1][xLim+1] = {0};
     int unique = 0,z;
-    while(unique<1)
+    bool fine;
+    while(unique<5)
     {
-        int randomx = (rand() % (xLim-2))+1;
-        int randomy = (rand() % (yLim-2))+1;
-
-        for(z=0;z<blockOff->getSize();z++){
-            if(bitVector[randomy][randomx] == 0 && randomy != blockOff->getElement(z).getObjPos().pos->y && randomx != blockOff->getElement(z).getObjPos().pos->x)
+        do
+        {
+            int randomx = (rand() % (xLim-2))+1;
+            int randomy = (rand() % (yLim-2))+1;
+            fine = true;
+            for(z=0;z<blockOff->getSize();z++){
+                if(!(bitVector[randomy][randomx] == 0 && randomy != blockOff->getElement(z).getObjPos().pos->y && randomx != blockOff->getElement(z).getObjPos().pos->x))
+                {
+                    fine = false;
+                    break;
+                }
+            }
+            if(fine == true)
             {
                 bitVector[randomy][randomx]++;
-                unique++; 
+                unique++;
             }
+    
         }
+        while(fine == false);
+
+
         
     }
     int i, j;
-    int k = 0;
     for(i = 0; i < yLim+1; i++)
     {
         for(j = 0; j < xLim+1; j++)
         {
             if(bitVector[i][j] != 0)
             {
-                foodPos.setObjPos(j, i, 'x');
-                k++;
+                objPos foodPos;
+                foodPos.setObjPos(j, i, 'x');  
+
+                foodBucket->insertTail(foodPos);  
             }
         }
     }
@@ -55,7 +68,12 @@ void Food::generateFood(objPosArrayList* blockOff)
 }
 
 
-objPos Food::getFoodPos() const
+objPos Food::getFoodPos(int index) const
 {
-    return foodPos;
+    return foodBucket->getElement(index);
+}
+
+objPosArrayList* Food::getFoodArrayList() const
+{
+    return foodBucket;
 }
