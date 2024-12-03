@@ -11,7 +11,7 @@ objPosArrayList::objPosArrayList()
     arrayCapacity = ARRAY_MAX_CAP;
     listSize = 0;
     aList = new objPos[ARRAY_MAX_CAP];
-    for(int i=0;i<listSize;i++){
+    for(int i=0;i<listSize;i++){ //initializing every objPos() in the arraylist
         aList[i] = objPos();
     }
 }
@@ -28,8 +28,9 @@ int objPosArrayList::getSize() const
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
+    //making sure you cant add a head if the list is over its capacity
     if(listSize>=arrayCapacity)return;
-
+    //insert Head code (copy everything back one index(start from the back) and insert head in resultant empty space)
     for(int i = listSize;i>0;i--){
         aList[i] = aList[i-1];
     }
@@ -40,9 +41,11 @@ void objPosArrayList::insertHead(objPos thisPos)
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
+    //indexing check(cant insert if over capacity)
     if(listSize>=arrayCapacity){
         return;
     }
+    //insert tail at the end of list
     aList[listSize] = thisPos;
     listSize++;
     
@@ -50,13 +53,15 @@ void objPosArrayList::insertTail(objPos thisPos)
 
 void objPosArrayList::removeHead()
 {
+    //cant remove head if list is 0
     if(listSize == 0) return;
+    //if list is only 1 item long
     else if(listSize==1){
         aList[0] = objPos();
         listSize--;
         return;
     }
-
+    //copy rest of list down to overwrite head
     for(int i = 1; i < listSize ; i++){
         aList[i-1] = aList[i];
     }
@@ -68,6 +73,7 @@ void objPosArrayList::removeHead()
 
 void objPosArrayList::removeTail()
 {
+    //if we reduce list size, the tail is not included in the list (deleting tail)
     if(listSize > 0)
         listSize--;
     

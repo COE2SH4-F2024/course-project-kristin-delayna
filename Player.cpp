@@ -60,7 +60,7 @@ void Player::updatePlayerDir()
                     myFSMMode = RIGHT;
                 }
                 break;
-            case 9: //Tab key to stop the snake
+            case 9: //Tab key to stop the snake (pause game)
                 myFSMMode = STOP;
                 break;
         }
@@ -79,6 +79,9 @@ void Player::movePlayer()
     move.setObjPos(playerPosList->getHeadElement());
 
     // PPA3 Finite State Machine logic
+    // this works by creating the objPos move. move is incremented with the direction we want the snake to move in and then added to the head of the snake
+    // the tail is then deleted to make sure the snake stays the same size when just moving regularly
+    // read more comments when the snake is not just moving regularly
     if(myFSMMode==LEFT){
         move.pos->x--;
         if(move.pos->x<1){
@@ -106,21 +109,23 @@ void Player::movePlayer()
     else if(myFSMMode==STOP){
         return;
     }
-    if(checkSelfCollision() == true)
+    if(checkSelfCollision() == true) //checking to see if snake hit itself
     {
         mainGameMechsRef->setLoseFlag();
         mainGameMechsRef->setExitTrue();
     }
+
+    //LOGIC FOR EATING FOOD
     bool foodEaten = false;
     for (int p = 0; p < foodBucket->getSize(); p++) {
-        objPos foody = foodBucket->getElement(p);
+        objPos foody = foodBucket->getElement(p); //current food that is being eaten
         if (move.isPosEqual(&foody)) {
             while(foodBucket->getSize()>0)
             {
-                foodBucket->removeTail();
+                foodBucket->removeTail(); //delete the foodBucket list for next random generation
             } 
-            mainFoodRef->generateFood(playerPosList); 
-            if(foody.getSymbol() == '$')
+            mainFoodRef->generateFood(playerPosList); //regenerate foods
+            if(foody.getSymbol() == '$') //if player eats money food, increment score by 10, increase snake length (by not deleting tail) and move snake forward
             {
                 for(int i = 0; i<10; i++)
                 {
@@ -128,7 +133,7 @@ void Player::movePlayer()
                 }
                 playerPosList->insertHead(move);
             }
-            else if(foody.getSymbol() == 'X')
+            else if(foody.getSymbol() == 'X') //if player eats bomb food, reset score to 0 and reset snake length
             {
                 mainGameMechsRef->Kaboom();
                 int size = playerPosList->getSize();
@@ -137,7 +142,7 @@ void Player::movePlayer()
                         playerPosList->removeTail();
                     }
             }       
-            else
+            else //regular eating (increase score by 1), increase length of snake (by not deleting tail)
             {
                 mainGameMechsRef->incrementScore();
                 playerPosList->insertHead(move);
@@ -145,17 +150,17 @@ void Player::movePlayer()
             foodEaten = true;
         }
     }
-    if (foodEaten == false && myFSMMode != STOP) {
+    if (foodEaten == false && myFSMMode != STOP) {// regular movement tail deletion
         playerPosList->insertHead(move);  
         playerPosList->removeTail(); 
     }
 }
 // More methods to be added
-int Player::getmyFSMmode()
+int Player::getmyFSMmode()// used for debugging
 {
-    return myFSMMode;
+    return myFSMMode; 
 }
-bool Player::checkSelfCollision(){
+bool Player::checkSelfCollision(){ //return true if player hits themselves (lose) otherwise false
     if(myFSMMode!=STOP){
         for(int i=1;i<playerPosList->getSize();i++){
             if(playerPosList->getHeadElement().pos->x == playerPosList->getElement(i).pos->x && playerPosList->getHeadElement().pos->y == playerPosList->getElement(i).pos->y){

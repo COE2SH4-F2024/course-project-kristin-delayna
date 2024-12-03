@@ -24,7 +24,8 @@ GameMechs::GameMechs(int boardX, int boardY)
     
 }
 
-// do you need a destructor?
+// do you need a destructor? 
+//no because we didn't use any heap memory in this class
 GameMechs::~GameMechs()
 {
 }

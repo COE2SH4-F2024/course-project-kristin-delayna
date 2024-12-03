@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define DELAY_CONST 750000
+#define DELAY_CONST 200000
 
 void Initialize(void);
 void GetInput(void);
@@ -79,22 +79,26 @@ void DrawScreen(void)
     int p =0;
 
     MacUILib_clearScreen();
+    MacUILib_printf("=========Snake Game=========\n");
+    MacUILib_printf("Use 'wasd' to collect items\n'a' = 1 point\n");
+    MacUILib_printf("'$' = 10 points\n'X' = Bomb (lose snake and points) \n");
+    MacUILib_printf("Press 'tab' to pause game.\nPress 'escape' to end game.\n");
 
     for(i=0;i<ySize;i++)
     {
         for(j=0;j<xSize;j++)
         {
-            if(i==0 || i == ySize-1)
+            if(i==0 || i == ySize-1) //draw border
             {
                 MacUILib_printf("#");
             }
-            else if(j==0 ||j == xSize-1)
+            else if(j==0 ||j == xSize-1) //draw border
             {
                 MacUILib_printf("#");
             }
             else
             {
-                bool foodprint = false;
+                bool foodprint = false; //draw food
                 for(int p = 0; p<foodBucket->getSize();p++)
                 {
                     objPos foodPos = foodBucket->getElement(p);
@@ -104,7 +108,7 @@ void DrawScreen(void)
                         foodprint = true;
                     }
                 }
-                if(!foodprint)
+                if(!foodprint)//draw player
                 {
                     int found = 0;
                     for(k=0;k<playerPos->getSize();k++){
@@ -114,7 +118,7 @@ void DrawScreen(void)
                         }
                     }
                     if (found==0){
-                        MacUILib_printf(" ");
+                        MacUILib_printf(" "); //draw spaces if nothing occupies that grid coordinate
                     }
                 }
             }
@@ -123,19 +127,20 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
     MacUILib_printf("Score: %d\n",game->getScore());
+    MacUILib_printf("============================\n");
     
 
     //debugging
-    MacUILib_printf("================Debugging=================\n");
-    MacUILib_printf("Input: %c\n",game->getInput());
-    MacUILib_printf("Player Position: %d %d\n",playerPos->getHeadElement().pos->x,playerPos->getHeadElement().pos->y);
-    MacUILib_printf("myFSMMode (UP, DOWN, LEFT, RIGHT, STOP): %d\n",myPlayer->getmyFSMmode());
-    MacUILib_printf("Snake Size: %d\n",playerPos->getSize());
+    // MacUILib_printf("================Debugging=================\n");
+    // MacUILib_printf("Input: %c\n",game->getInput());
+    // MacUILib_printf("Player Position: %d %d\n",playerPos->getHeadElement().pos->x,playerPos->getHeadElement().pos->y);
+    // MacUILib_printf("myFSMMode (UP, DOWN, LEFT, RIGHT, STOP): %d\n",myPlayer->getmyFSMmode());
+    // MacUILib_printf("Snake Size: %d\n",playerPos->getSize());
 }
 
 void LoopDelay(void)
 {
-    MacUILib_Delay(DELAY_CONST); // 0.1s delay
+    MacUILib_Delay(DELAY_CONST); // 0.2s delay
 }
 
 
@@ -143,7 +148,7 @@ void CleanUp(void)
 {
     MacUILib_clearScreen();    
     if(game->getLoseFlagStatus()==true){
-        MacUILib_printf("You Lost!\n");
+        MacUILib_printf("Collision! You Lost!\n");
     }
     if(game->getExitFlagStatus()==true){
         MacUILib_printf("Exiting game...\n");

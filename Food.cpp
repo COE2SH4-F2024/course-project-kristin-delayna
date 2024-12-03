@@ -15,25 +15,25 @@ Food::Food(int boardSizeX,int boardSizeY){
 }
 
 Food::~Food(){
-    delete[] foodBucket;
-    
+    delete foodBucket;
 }
 
 void Food::generateFood(objPosArrayList* blockOff)
 {
     int z;
     bool fine;
-    objPos foodPos;
+    objPos foodPos; //this is a temporary position for food (its only added to food bucket if it doesnt overlap with any other object on the board)
     for(z = 0; z < 3; z++)
     {
         do
         {   
             fine = true;
+            //generate random coordinates
             int randomx = (rand() % (xLim-2))+1;
             int randomy = (rand() % (yLim-2))+1;
 
             foodPos.setObjPos(randomx,randomy,'a');
-
+            //make sure new food isnt on top of old food
             for(int j = 0; j< foodBucket->getSize(); j++)
             {
                 objPos foodi = foodBucket->getElement(j);
@@ -42,6 +42,7 @@ void Food::generateFood(objPosArrayList* blockOff)
                     fine = false;
                 }
             }
+            //make sure new food isn't on top of snake
             for(int i = 0; i<blockOff->getSize(); i++)
             {
                 objPos cur = blockOff->getElement(i);
@@ -51,9 +52,10 @@ void Food::generateFood(objPosArrayList* blockOff)
                 }
             }
         }
-        while(fine == false);
-        foodBucket->insertTail(foodPos);
+        while(fine == false); //keep repeating until all is fine (nothing overlaps)
+        foodBucket->insertTail(foodPos); //insert the newly generated 'fine' foodPos into foodBucket
     }
+    //this code repeats for all different objects on the game board (uses the same logic as above)
     int p;
     for(p = 0; p < 1; p++)
     {
@@ -86,8 +88,8 @@ void Food::generateFood(objPosArrayList* blockOff)
         foodBucket->insertTail(foodPos);
     }
 
-int R;
-    for(R = 0; R < 1; R++)
+int r;
+    for(r = 0; r < 1; r++)
     {
         do
         {   
@@ -120,38 +122,6 @@ int R;
 
 
 }
-        
-            // int randomx = (rand() % (xLim-2))+1;
-            // int randomy = (rand() % (yLim-2))+1;
-            // fine = true;
-            // for(z=0;z<blockOff->getSize();z++){
-            //     objPos cur = blockOff->getElement(z);
-            //     if(foodPos.isPosEqual(&cur) && bitVector[randomy][randomx] != 0)
-            //     {
-            //         fine = false;
-            //     }
-            // }
-            // if(fine == true)
-            // {
-            //     bitVector[randomy][randomx]++;
-            //     unique++;
-            // }
- 
-    // }
-    // int i, j;
-    // for(i = 0; i < yLim+1; i++)
-    // {
-    //     for(j = 0; j < xLim+1; j++)
-    //     {
-    //         if(bitVector[i][j] != 0)
-    //         {
-    //             foodPos.setObjPos(j, i, 'x');  
-
-    //             foodBucket->insertHead(foodPos);  
-    //         }
-    //     }
-    // }
-
 
 
 objPos Food::getFoodPos(int index) const
